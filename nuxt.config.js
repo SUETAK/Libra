@@ -1,4 +1,9 @@
+// @ts-ignore
+
 import colors from 'vuetify/es5/util/colors'
+import webpack from "webpack";
+
+
 
 export default {
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
@@ -66,5 +71,20 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
+    //   plugins: [
+    //     new MonacoWebpackPlugin({
+    //       languages: ["javascript", "html"],
+    //     }),
+    //   ],
+    //   vendor: ['monaco-editor'],
+    //   extend(config, {isDev, isClient}) {
+    //     config.plugins.push(
+    //       new MonacoWebpackPlugin(webpack)
+    //     )
+    //     if (isClient) {
+    //       config.target = 'electron-renderer'
+    //     }
+    //   }
+    // }
   }
 }
