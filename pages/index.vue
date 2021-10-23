@@ -7,7 +7,7 @@
       class="editor"
       language="javascript"
       ref="diffViewEditor"
-      :aria-modal="left"
+      :options="options"
     />
   </div>
 </template>
@@ -20,8 +20,16 @@ export default {
     MonacoEditor
   },
 
+
   data() {
     return {
+      options: {
+        enableSplitViewResizing: false,
+        // Render the diff inline
+        renderSideBySide: true,
+        LineNumbersType: "on",
+        BuiltinTheme: "vs-dark"
+      },
       left: `import Vue from 'vue'
 import App from './App.vue'
 
@@ -71,7 +79,7 @@ new Vue({
 
 <style>
 .editor {
-  width: 600px;
+  width: 100%;
   height: 800px;
 }
 </style>
