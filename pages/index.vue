@@ -151,8 +151,7 @@ new Vue({
       this.doRequest(this.requestUrl, this.headerMerge(this.requestRightHeader, this.rightHeader), this.right)
     },
     async doRequest(url, header, target) {
-      const resposne = await this.$axios.get(url, {headers : JSON.stringify(header)})
-      target = resposne.toString()
+      target = await this.$axios.get(url, {headers : JSON.stringify(header)}).toString()
     },
     addHeader(header) {
       header.push({
