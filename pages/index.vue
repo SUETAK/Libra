@@ -41,7 +41,8 @@
               <v-flex>
                 <v-expansion-panels class="px-2">
                   <v-expansion-panel>
-                    <v-expansion-panel-header class="d-flex justify-space-around">right-header</v-expansion-panel-header>
+                    <v-expansion-panel-header class="d-flex justify-space-around">right-header
+                    </v-expansion-panel-header>
                     <v-expansion-panel-content v-for="header in rightHeader">
                       <div class="d-flex justify-space-around">
                         <v-text-field label="rightHeader-key" v-model="header.key" class="px-6"/>
@@ -121,11 +122,17 @@ export default {
     if (localStorage.getItem('leftHeader') != null) {
       this.leftHeader = JSON.parse(localStorage.getItem('leftHeader'))
     }
-    if (localStorage.getItem('rightHeader')!= null) {
+    if (localStorage.getItem('rightHeader') != null) {
       this.rightHeader = JSON.parse(localStorage.getItem('rightHeader'))
     }
-    if (localStorage.getItem('commonHeader')!= null) {
+    if (localStorage.getItem('commonHeader') != null) {
       this.commonHeader = JSON.parse(localStorage.getItem('commonHeader'))
+    }
+  },
+  watch: {
+    leftResponse: function (newVal, oldVal) {
+      console.log(newVal, oldVal)
+      this.left = newVal
     }
   },
   methods: {
@@ -137,37 +144,32 @@ export default {
       localStorage.setItem('commonHeader', JSON.stringify(this.commonHeader))
 
     },
-    testResponse() {
-      this.left = "左側の変化後"
-      this.right = "migigawanohenkago"
-    },
     headerMerge(requestHeader, addHeader) {
       return requestHeader.push(this.commonHeader, addHeader)
     },
-    submitRequest() {
+    async submitRequest() {
       this.saveLocalStorage()
-      this.left = this.doRequest(this.requestUrl, this.headerMerge(this.requestLeftHeader, this.leftHeader))
-      console.log("leftResponse")
+      const leftResult = this.doRequest(this.requestUrl, this.headerMerge(this.requestLeftHeader, this.leftHeader), this.leftResponse)
       console.log(this.left)
-      this.right = this.doRequest(this.requestUrl, this.headerMerge(this.requestRightHeader, this.rightHeader))
-      console.log("rightResponse")
-      console.log(this.right)
+      console.log(leftResult)
+      const rightResult = this.doRequest(this.requestUrl, this.headerMerge(this.requestRightHeader, this.rightHeader), this.rightResponse)
     },
     changeMessage() {
       this.left = this.leftResponse
       this.right = this.rightResponse
     },
-    doRequest(url, header) {
+    async doRequest(url, header, target) {
       try {
         console.log("doRequest")
-        console.log(url)
-        const response = this.$axios.get(url, {headers: JSON.stringify(header)}).then(function (response) {
-          console.log(response)
-          return response.data
+        await this.$axios.get(url, {headers: JSON.stringify(header)}).then(function (response) {
+          target = "今変更されました"
+          console.log(target)
+          target = JSON.stringify(response.data).toString()
+          console.log(target)
+          return target
         }).catch(function (error) {
           console.log(error)
         })
-        return JSON.stringify(response).toString()
       } catch (e) {
         console.log(e)
       }
