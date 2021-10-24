@@ -9,10 +9,10 @@
               <v-expansion-panels value="expanded" class="px-2">
                 <v-expansion-panel>
                   <v-expansion-panel-header class="d-flex justify-space-around">common-header</v-expansion-panel-header>
-                  <v-expansion-panel-content v-for="header in commonHeader" v-bind="header">
+                  <v-expansion-panel-content v-for="header in commonHeader">
                     <div class="d-flex justify-space-around">
-                      <v-text-field label="commonHeader-key" class="px-6"/>
-                      <v-text-field label="commonHeader-value" class="px-6"/>
+                      <v-text-field label="commonHeader-key" v-model="header.key" class="px-6"/>
+                      <v-text-field label="commonHeader-value" v-model="header.value" class="px-6"/>
                     </div>
                   </v-expansion-panel-content>
                 </v-expansion-panel>
@@ -26,10 +26,10 @@
                 <v-expansion-panels class="px-2">
                   <v-expansion-panel>
                     <v-expansion-panel-header class="d-flex justify-space-around">left-header</v-expansion-panel-header>
-                    <v-expansion-panel-content v-for="header in leftHeader" v-bind="header">
+                    <v-expansion-panel-content v-for="header in leftHeader">
                       <div class="d-flex justify-space-around">
-                        <v-text-field label="leftHeader-key" class="px-6"/>
-                        <v-text-field label="leftHeader-value" class="px-6"/>
+                        <v-text-field label="leftHeader-key" v-model="header.key" class="px-6"/>
+                        <v-text-field label="leftHeader-value" v-model="header.value" class="px-6"/>
                       </div>
                     </v-expansion-panel-content>
                   </v-expansion-panel>
@@ -42,10 +42,10 @@
                 <v-expansion-panels class="px-2">
                   <v-expansion-panel>
                     <v-expansion-panel-header class="d-flex justify-space-around">right-header</v-expansion-panel-header>
-                    <v-expansion-panel-content v-for="header in rightHeader" v-bind="header">
+                    <v-expansion-panel-content v-for="header in rightHeader">
                       <div class="d-flex justify-space-around">
-                        <v-text-field label="rightHeader-key" class="px-6"/>
-                        <v-text-field label="rightHeader-value" class="px-6"/>
+                        <v-text-field label="rightHeader-key" v-model="header.key" class="px-6"/>
+                        <v-text-field label="rightHeader-value" v-model="header.value" class="px-6"/>
                       </div>
                     </v-expansion-panel-content>
                   </v-expansion-panel>
@@ -58,6 +58,10 @@
         </v-col>
       </v-row>
     </v-container>
+    <div>
+      <v-btn @click="headerMerge(requestLeftHeader, leftHeader)"></v-btn>
+      {{requestLeftHeader}}
+    </div>
 
     <MonacoEditor
       :diffEditor="true"
@@ -92,6 +96,8 @@ export default {
         key: "",
         value: ""
       }],
+      requestLeftHeader: [],
+      requestRightHeader: [],
       options: {
         enableSplitViewResizing: false,
         // Render the diff inline
@@ -137,8 +143,11 @@ new Vue({
 
   methods: {
 
-    request(url, header) {
-
+    headerMerge(requestHeader, addHeader) {
+      requestHeader.push(this.commonHeader, addHeader)
+    },
+    async doRequest(url, header) {
+      const resposne = await axios.get(url, {headers : JSON.stringify(header)})
     },
     addHeader(header) {
       header.push({
