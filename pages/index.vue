@@ -102,33 +102,10 @@ export default {
         LineNumbersType: "on",
         BuiltinTheme: "vs-dark"
       },
-      left: `import Vue from 'vue'
-import App from './App.vue'
-
-Vue.config.productionTip = false
-
-new Vue({
-  render: h => h(App),
-}).$mount('#app')
-`,
-      right: `module.exports = {
-  root: true,
-  env: {
-    node: true
-  },
-  'extends': [
-    'plugin:vue/essential',
-    'eslint:recommended'
-  ],
-  rules: {
-    'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
-    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off'
-  },
-  parserOptions: {
-    parser: 'babel-eslint'
-  }
-}
-`
+      left: "leftTest",
+      right: "rightTest",
+      leftResponse: "",
+      rightResponse: ""
     }
   },
   // send を押す
@@ -169,11 +146,32 @@ new Vue({
     },
     submitRequest() {
       this.saveLocalStorage()
-      this.doRequest(this.requestUrl, this.headerMerge(this.requestLeftHeader, this.leftHeader), this.left)
-      this.doRequest(this.requestUrl, this.headerMerge(this.requestRightHeader, this.rightHeader), this.right)
+      this.left = this.doRequest(this.requestUrl, this.headerMerge(this.requestLeftHeader, this.leftHeader))
+      console.log("leftResponse")
+      console.log(this.left)
+      this.right = this.doRequest(this.requestUrl, this.headerMerge(this.requestRightHeader, this.rightHeader))
+      console.log("rightResponse")
+      console.log(this.right)
     },
-    async doRequest(url, header, target) {
-      target = await this.$axios.get(url, {headers : JSON.stringify(header)}).toString()
+    changeMessage() {
+      this.left = this.leftResponse
+      this.right = this.rightResponse
+    },
+    doRequest(url, header) {
+      try {
+        console.log("doRequest")
+        console.log(url)
+        const response = this.$axios.get(url, {headers: JSON.stringify(header)}).then(function (response) {
+          console.log(response)
+          return response.data
+        }).catch(function (error) {
+          console.log(error)
+        })
+        return JSON.stringify(response).toString()
+      } catch (e) {
+        console.log(e)
+      }
+
     },
     addHeader(header) {
       header.push({
