@@ -3,7 +3,7 @@
     <v-container>
       <v-row>
         <v-col>
-          <v-text-field label="requestURL"/>
+          <v-text-field label="requestURL" v-model="requestUrl"/>
           <div class="d-flex justify-space-around pa-6">
             <v-flex>
               <v-expansion-panels value="expanded" class="px-2">
@@ -54,14 +54,10 @@
               <v-btn class="pa-6" @click="addHeader(rightHeader)">addHeader</v-btn>
             </div>
           </v-row>
-          <v-btn class="d-flex justify-center mb-6">submit</v-btn>
+          <v-btn class="d-flex justify-center mb-6" @click="submitRequest">submit</v-btn>
         </v-col>
       </v-row>
     </v-container>
-    <div>
-      <v-btn @click="headerMerge(requestLeftHeader, leftHeader)"></v-btn>
-      {{requestLeftHeader}}
-    </div>
 
     <MonacoEditor
       :diffEditor="true"
@@ -84,6 +80,7 @@ export default {
   },
   data() {
     return {
+      requestUrl: "",
       commonHeader: [{
         key: "",
         value: ""
@@ -142,12 +139,20 @@ new Vue({
   // right, left の値の変化をwatch, computed で監視
 
   methods: {
-
-    headerMerge(requestHeader, addHeader) {
-      requestHeader.push(this.commonHeader, addHeader)
+    testResponse() {
+      this.left = "左側の変化後"
+      this.right = "migigawanohenkago"
     },
-    async doRequest(url, header) {
+    headerMerge(requestHeader, addHeader) {
+      return requestHeader.push(this.commonHeader, addHeader)
+    },
+    submitRequest() {
+      this.doRequest(this.requestUrl, this.headerMerge(this.requestLeftHeader, this.leftHeader), this.left)
+      this.doRequest(this.requestUrl, this.headerMerge(this.requestRightHeader, this.rightHeader), this.right)
+    },
+    async doRequest(url, header, target) {
       const resposne = await axios.get(url, {headers : JSON.stringify(header)})
+      target = resposne.toString()
     },
     addHeader(header) {
       header.push({
