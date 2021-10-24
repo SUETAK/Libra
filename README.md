@@ -21,6 +21,8 @@ $ npm run generate
 １つのAPIに対するレスポンスを比較できます。
 headerを付与するかしないかなどでレスポンスが変化するような時に使用してください。
 
+![picture](.static/testpicture.png)
+
 ### commonHeader
 差分をみたい時に共通するヘッダを指定してください
 
