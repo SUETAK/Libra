@@ -65,7 +65,7 @@
       :original="left"
       :value="right"
       class="editor"
-      language="javascript"
+      language="json"
       ref="diffViewEditor"
       :options="options"
     />
@@ -149,31 +149,38 @@ export default {
     },
     async submitRequest() {
       this.saveLocalStorage()
-      const leftResult = this.doRequest(this.requestUrl, this.headerMerge(this.requestLeftHeader, this.leftHeader), this.leftResponse)
-      console.log(this.left)
-      console.log(leftResult)
-      const rightResult = this.doRequest(this.requestUrl, this.headerMerge(this.requestRightHeader, this.rightHeader), this.rightResponse)
+      await this.doLeftRequest(this.requestUrl, this.headerMerge(this.requestLeftHeader, this.leftHeader))
+      await this.doRightRequest(this.requestUrl, this.headerMerge(this.requestRightHeader, this.rightHeader))
     },
     changeMessage() {
       this.left = this.leftResponse
       this.right = this.rightResponse
     },
-    async doRequest(url, header, target) {
+    async doLeftRequest(url, header) {
       try {
-        console.log("doRequest")
+        console.log("doLeftRequest")
+        let self = this
         await this.$axios.get(url, {headers: JSON.stringify(header)}).then(function (response) {
-          target = "今変更されました"
-          console.log(target)
-          target = JSON.stringify(response.data).toString()
-          console.log(target)
-          return target
+          self.left = JSON.stringify(response.data).toString()
         }).catch(function (error) {
           console.log(error)
         })
       } catch (e) {
         console.log(e)
       }
-
+    },
+    async doRightRequest(url, header) {
+      try {
+        console.log("doRightRequest")
+        let self = this
+        await this.$axios.get(url, {headers: JSON.stringify(header)}).then(function (response) {
+          self.right = JSON.stringify(response.data).toString()
+        }).catch(function (error) {
+          console.log(error)
+        })
+      } catch (e) {
+        console.log(e)
+      }
     },
     addHeader(header) {
       header.push({
