@@ -137,8 +137,29 @@ new Vue({
   // リクエストが返却される
   // レスポンスで値を変更
   // right, left の値の変化をwatch, computed で監視
-
+  mounted() {
+    if (localStorage.getItem('requestUrl') != null) {
+      this.requestUrl = localStorage.getItem('requestUrl')
+    }
+    if (localStorage.getItem('leftHeader') != null) {
+      this.leftHeader = JSON.parse(localStorage.getItem('leftHeader'))
+    }
+    if (localStorage.getItem('rightHeader')!= null) {
+      this.rightHeader = JSON.parse(localStorage.getItem('rightHeader'))
+    }
+    if (localStorage.getItem('commonHeader')!= null) {
+      this.commonHeader = JSON.parse(localStorage.getItem('commonHeader'))
+    }
+  },
   methods: {
+    saveLocalStorage() {
+      // this.fullName = val + ' ' + this.lastName
+      localStorage.setItem('requestUrl', this.requestUrl)
+      localStorage.setItem('leftHeader', JSON.stringify(this.leftHeader))
+      localStorage.setItem('rightHeader', JSON.stringify(this.rightHeader))
+      localStorage.setItem('commonHeader', JSON.stringify(this.commonHeader))
+
+    },
     testResponse() {
       this.left = "左側の変化後"
       this.right = "migigawanohenkago"
@@ -147,6 +168,7 @@ new Vue({
       return requestHeader.push(this.commonHeader, addHeader)
     },
     submitRequest() {
+      this.saveLocalStorage()
       this.doRequest(this.requestUrl, this.headerMerge(this.requestLeftHeader, this.leftHeader), this.left)
       this.doRequest(this.requestUrl, this.headerMerge(this.requestRightHeader, this.rightHeader), this.right)
     },
