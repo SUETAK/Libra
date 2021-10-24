@@ -105,8 +105,6 @@ export default {
       },
       left: "leftTest",
       right: "rightTest",
-      leftResponse: "",
-      rightResponse: ""
     }
   },
   // send を押す
@@ -129,12 +127,6 @@ export default {
       this.commonHeader = JSON.parse(localStorage.getItem('commonHeader'))
     }
   },
-  watch: {
-    leftResponse: function (newVal, oldVal) {
-      console.log(newVal, oldVal)
-      this.left = newVal
-    }
-  },
   methods: {
     saveLocalStorage() {
       // this.fullName = val + ' ' + this.lastName
@@ -151,10 +143,6 @@ export default {
       this.saveLocalStorage()
       await this.doLeftRequest(this.requestUrl, this.headerMerge(this.requestLeftHeader, this.leftHeader))
       await this.doRightRequest(this.requestUrl, this.headerMerge(this.requestRightHeader, this.rightHeader))
-    },
-    changeMessage() {
-      this.left = this.leftResponse
-      this.right = this.rightResponse
     },
     async doLeftRequest(url, header) {
       try {
