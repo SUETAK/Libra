@@ -62,8 +62,8 @@
 
     <MonacoEditor
       :diffEditor="true"
-      :original="left"
-      :value="right"
+      :original="JSON.stringify(left, null, ' ')"
+      :value="JSON.stringify(right , null, ' ')"
       class="editor"
       language="json"
       ref="diffViewEditor"
@@ -161,7 +161,7 @@ export default {
         console.log("doLeftRequest")
         let self = this
         await this.$axios.get(url, {headers: JSON.stringify(header)}).then(function (response) {
-          self.left = JSON.stringify(response.data).toString()
+          self.left = response.data
         }).catch(function (error) {
           console.log(error)
         })
@@ -174,7 +174,7 @@ export default {
         console.log("doRightRequest")
         let self = this
         await this.$axios.get(url, {headers: JSON.stringify(header)}).then(function (response) {
-          self.right = JSON.stringify(response.data).toString()
+          self.right = response.data
         }).catch(function (error) {
           console.log(error)
         })
