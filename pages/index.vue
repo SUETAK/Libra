@@ -3,59 +3,70 @@
     <v-container>
       <v-row>
         <v-col>
-          <v-text-field label="requestURL" v-model="requestUrl"/>
-          <div class="d-flex justify-space-around pa-6">
-            <v-flex>
-              <v-expansion-panels value="expanded" class="px-2">
-                <v-expansion-panel>
-                  <v-expansion-panel-header class="d-flex justify-space-around">common-header</v-expansion-panel-header>
-                  <v-expansion-panel-content v-for="header in commonHeader">
-                    <div class="d-flex justify-space-around">
-                      <v-text-field label="commonHeader-key" v-model="header.key" class="px-6"/>
-                      <v-text-field label="commonHeader-value" v-model="header.value" class="px-6"/>
-                    </div>
-                  </v-expansion-panel-content>
-                </v-expansion-panel>
-              </v-expansion-panels>
-            </v-flex>
-            <v-btn class="pa-6" @click="addHeader(commonHeader)">addHeader</v-btn>
-          </div>
-          <v-row class="d-flex justify-space-around pa-6">
-            <div class="d-flex justify-space-around pa-6">
-              <v-flex>
-                <v-expansion-panels class="px-2">
-                  <v-expansion-panel>
-                    <v-expansion-panel-header class="d-flex justify-space-around">left-header</v-expansion-panel-header>
-                    <v-expansion-panel-content v-for="header in leftHeader">
-                      <div class="d-flex justify-space-around">
-                        <v-text-field label="leftHeader-key" v-model="header.key" class="px-6"/>
-                        <v-text-field label="leftHeader-value" v-model="header.value" class="px-6"/>
-                      </div>
-                    </v-expansion-panel-content>
-                  </v-expansion-panel>
-                </v-expansion-panels>
-              </v-flex>
-              <v-btn class="pa-6" @click="addHeader(leftHeader)">addHeader</v-btn>
-            </div>
-            <div class="d-flex justify-space-around pa-6">
-              <v-flex>
-                <v-expansion-panels class="px-2">
-                  <v-expansion-panel>
-                    <v-expansion-panel-header class="d-flex justify-space-around">right-header
-                    </v-expansion-panel-header>
-                    <v-expansion-panel-content v-for="header in rightHeader">
-                      <div class="d-flex justify-space-around">
-                        <v-text-field label="rightHeader-key" v-model="header.key" class="px-6"/>
-                        <v-text-field label="rightHeader-value" v-model="header.value" class="px-6"/>
-                      </div>
-                    </v-expansion-panel-content>
-                  </v-expansion-panel>
-                </v-expansion-panels>
-              </v-flex>
-              <v-btn class="pa-6" @click="addHeader(rightHeader)">addHeader</v-btn>
-            </div>
+          <v-row class="d-flex justify-space-around">
+            <v-text-field label="requestURL" v-model="requestUrl"/>
+            <v-btn @click="submitRequest">submit</v-btn>
+            <v-btn @click="copyCommonRequest">copy CommonRequest</v-btn>
           </v-row>
-          <v-btn class="d-flex justify-center mb-6" @click="submitRequest">submit</v-btn>
+<!--          <div class="d-flex justify-space-around pa-6">-->
+<!--            <v-flex>-->
+<!--              <v-expansion-panels value="expanded" class="px-2">-->
+<!--                <v-expansion-panel>-->
+<!--                  <v-expansion-panel-header class="d-flex justify-space-around">common-header</v-expansion-panel-header>-->
+<!--                  <v-expansion-panel-content v-for="header in commonHeader">-->
+<!--                    <div class="d-flex justify-space-around">-->
+<!--                      <v-text-field label="commonHeader-key" v-model="header.key" class="px-6"/>-->
+<!--                      <v-text-field label="commonHeader-value" v-model="header.value" class="px-6"/>-->
+<!--                    </div>-->
+<!--                  </v-expansion-panel-content>-->
+<!--                </v-expansion-panel>-->
+<!--              </v-expansion-panels>-->
+<!--            </v-flex>-->
+<!--            <v-btn class="pa-6" @click="addHeader(commonHeader)">addHeader</v-btn>-->
+<!--          </div>-->
+<!--          <v-row class="d-flex justify-space-around pa-6">-->
+<!--            <div class="d-flex justify-space-around pa-6">-->
+<!--              <v-flex>-->
+<!--                <v-expansion-panels class="px-2">-->
+<!--                  <v-expansion-panel>-->
+<!--                    <v-expansion-panel-header class="d-flex justify-space-around">left-header</v-expansion-panel-header>-->
+<!--                    <v-expansion-panel-content v-for="header in leftHeader">-->
+<!--                      <div class="d-flex justify-space-around">-->
+<!--                        <v-text-field label="leftHeader-key" v-model="header.key" class="px-6"/>-->
+<!--                        <v-text-field label="leftHeader-value" v-model="header.value" class="px-6"/>-->
+<!--                      </div>-->
+<!--                    </v-expansion-panel-content>-->
+<!--                  </v-expansion-panel>-->
+<!--                </v-expansion-panels>-->
+<!--              </v-flex>-->
+<!--              <v-btn class="pa-6" @click="addHeader(leftHeader)">addHeader</v-btn>-->
+<!--            </div>-->
+<!--            <div class="d-flex justify-space-around pa-6">-->
+<!--              <v-flex>-->
+<!--                <v-expansion-panels class="px-2">-->
+<!--                  <v-expansion-panel>-->
+<!--                    <v-expansion-panel-header class="d-flex justify-space-around">right-header-->
+<!--                    </v-expansion-panel-header>-->
+<!--                    <v-expansion-panel-content v-for="header in rightHeader">-->
+<!--                      <div class="d-flex justify-space-around">-->
+<!--                        <v-text-field label="rightHeader-key" v-model="header.key" class="px-6"/>-->
+<!--                        <v-text-field label="rightHeader-value" v-model="header.value" class="px-6"/>-->
+<!--                      </div>-->
+<!--                    </v-expansion-panel-content>-->
+<!--                  </v-expansion-panel>-->
+<!--                </v-expansion-panels>-->
+<!--              </v-flex>-->
+<!--              <v-btn class="pa-6" @click="addHeader(rightHeader)">addHeader</v-btn>-->
+<!--            </div>-->
+<!--          </v-row>-->
+          <v-row class="d-flex justify-space-around">
+            <v-text-field label="leftRequest" v-model="leftRequest"></v-text-field>
+            <v-btn @click="doLeftRequest(leftRequest, leftHeader)">do LeftRequest</v-btn>
+          </v-row>
+          <v-row class="d-flex justify-space-around">
+            <v-text-field label="leftRequest" v-model="rightRequest"></v-text-field>
+            <v-btn @click="doRightRequest(rightRequest, rightHeader)">do RightRequest</v-btn>
+          </v-row>
         </v-col>
       </v-row>
     </v-container>
@@ -105,6 +116,8 @@ export default {
       },
       left: "leftTest",
       right: "rightTest",
+      leftRequest: "",
+      rightRequest: ""
     }
   },
   // send を押す
@@ -128,6 +141,10 @@ export default {
     }
   },
   methods: {
+    copyCommonRequest() {
+      this.leftRequest = this.requestUrl
+      this.rightRequest = this.requestUrl
+    },
     saveLocalStorage() {
       // this.fullName = val + ' ' + this.lastName
       localStorage.setItem('requestUrl', this.requestUrl)
@@ -148,7 +165,7 @@ export default {
       try {
         console.log("doLeftRequest")
         let self = this
-        await this.$axios.get(url, {headers: JSON.stringify(header)}).then(function (response) {
+        await this.$axios.get(url).then(function (response) {
           self.left = response.data
         }).catch(function (error) {
           console.log(error)
@@ -161,7 +178,7 @@ export default {
       try {
         console.log("doRightRequest")
         let self = this
-        await this.$axios.get(url, {headers: JSON.stringify(header)}).then(function (response) {
+        await this.$axios.get(url).then(function (response) {
           self.right = response.data
         }).catch(function (error) {
           console.log(error)
